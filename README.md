@@ -3,6 +3,7 @@ This tool uses low level C++ Win32 API to interact with the game’s memory to m
 ### Features:
   * dynamic weapon recognition
   * GDI+ skinchanger menu
+  * Uses https://github.com/ByMykel/CSGO-API for weapon icons and item rarity
   * Supports old and new weapon models
   * Config manager which loads skins that were last used
   * Trusted Dumper: Uses the https://github.com/a2x/cs2-dumper.git  You can compile the dumper yourself if you prefer.
@@ -30,3 +31,4 @@ Option 2 manual:
   * wompwomp6 - Provided the base tool.
   * ValorantTracker - Developed the GDI+ menu on top of the base.
   * a2x - Provided the offset dumper.
+  * ByMykel - Provided CSGO-API: https://github.com/ByMykel/CSGO-API
