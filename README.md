@@ -1,4 +1,30 @@
-# This is updated version of skinchanger from ValorantTracker.
-# His original repo is at: https://github.com/ValorantTracker/cs2-skin-changer
-# Fixed logic, offsets, removed unused imgui files and added LTO optimisation, made config system actualy work and added BUILD.bat for easier compilation.
-# Next main thing would be adding support for knifes and gloves but that will be in future.
+# External Skinchanger for CS2
+This tool uses low level C++ Win32 API to interact with the game’s memory to make skins change.
+### Features:
+  * dynamic weapon recognition
+  * GDI+ skinchanger menu
+  * Supports old and new weapon models
+  * Config manager which loads skins that were last used
+### Requirements: 
+* Visual Studio 2022 \
+* Counter-Strike 2
+### How to build:
+Option 1 Recommended:
+  1. Open CS2
+  2. Run build.bat
+ * This will automatically fetch fresh offsets and compile the tool.
+   
+Option 2 manual:
+  1. Open CS2
+  2. Run cs2-dumper.exe to get fresh offsets
+  3. Run build.bat
+ * This option requires you to run the dumper separately from the build.bat script.
+#### All weapon skins works reliably and tool is quite stable in matchmaking.
+#### Knives and gloves are not yet supported.
+### Disclaimer:
+#### Use this skinchanger at your own risk. Even if chances of detection are small they are never zero.
+#### Do not use this on any account that has skins of value.
+#### In case if game updates you literally just dump the offsets and recompile, or run build.bat with game open to dump offsets automatically.
+#### Credits: 
+  * wompwomp6
+  * ValorantTracker
