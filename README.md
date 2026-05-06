@@ -5,6 +5,7 @@ This tool uses low level C++ Win32 API to interact with the game’s memory to m
   * GDI+ skinchanger menu
   * Supports old and new weapon models
   * Config manager which loads skins that were last used
+  * Trusted Dumper: Uses the https://github.com/a2x/cs2-dumper.git  You can compile the dumper yourself if you prefer.
 ### Requirements: 
 * Visual Studio 2022 \
 * Counter-Strike 2
@@ -19,12 +20,13 @@ Option 2 manual:
   2. Run cs2-dumper.exe to get fresh offsets
   3. Run build.bat
  * This option requires you to run the dumper separately from the build.bat script.
-#### All weapon skins works reliably and tool is quite stable in matchmaking.
+#### All weapon skins work reliably and tool is quite stable in matchmaking.
 #### Knives and gloves are not yet supported.
 ### Disclaimer:
 #### Use this skinchanger at your own risk. Even if chances of detection are small they are never zero.
 #### Do not use this on any account that has skins of value.
 #### In case if game updates you literally just dump the offsets and recompile, or run build.bat with game open to dump offsets automatically.
 #### Credits: 
-  * wompwomp6
-  * ValorantTracker
+  * wompwomp6 - Provided the base tool.
+  * ValorantTracker - Developed the GDI+ menu on top of the base.
+  * a2x - Provided the offset dumper.
