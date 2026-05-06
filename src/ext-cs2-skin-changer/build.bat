@@ -17,6 +17,24 @@ REM --- ACTUAL LIB PATHS ---
 set CURL_LIB_DIR=%PROJECT_DIR%\packages\curl-vc140-static-32_64.7.53.0\lib\native\libs\x64\static\release
 set OPENSSL_LIB_DIR=%SRC_DIR%\include\openssl-native.1.0.1\build\native\lib\x64
 
+REM --- Run dumper before build ---
+echo [0/5] Running offset dumper...
+
+if exist "cs2-dumper.exe" (
+    echo Found cs2-dumper.exe, updating offsets...
+    cs2-dumper.exe
+
+    if %ERRORLEVEL% neq 0 (
+        echo WARNING! Dumper failed, compiling with possibly outdated offsets.
+    ) else (
+        echo Offsets updated successfully.
+    )
+) else (
+    echo WARNING! compiling with old offsets
+)
+
+echo.
+
 REM --- Clean previous build ---
 if exist "ext-cs2-skin-changer.exe" del "ext-cs2-skin-changer.exe"
 del *.obj *.pdb *.ilk *.exp 2>nul
@@ -39,7 +57,6 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo [3/5] Linking with LTCG and ICF...
-:: Added gdi32.lib to the list below
 link /OUT:ext-cs2-skin-changer.exe *.obj d3d11.lib d3dcompiler.lib dxgi.lib user32.lib dwmapi.lib gdi32.lib gdiplus.lib ole32.lib /LIBPATH:"%OPENSSL_LIB_DIR%" libssl.lib libcrypto.lib ws2_32.lib wldap32.lib crypt32.lib normaliz.lib /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG
 
 if %ERRORLEVEL% neq 0 (
