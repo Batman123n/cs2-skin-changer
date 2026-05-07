@@ -11,12 +11,12 @@ This tool uses low level C++ Win32 API to interact with the game’s memory to m
 * Visual Studio 2022 
 * Counter-Strike 2
 ### How to build:
-Option 1 Recommended:
+Option 1 (Recommended):
   1. Open CS2
   2. Run build.bat
  * This will automatically fetch fresh offsets and compile the tool.
    
-Option 2 manual:
+Option 2 (Manual):
   1. Open CS2
   2. Run cs2-dumper.exe to get fresh offsets
   3. Run build.bat
