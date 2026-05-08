@@ -13,9 +13,6 @@ set PROJECT_DIR=%CD%
 set SRC_DIR=%PROJECT_DIR%\src
 set EXT_DIR=%PROJECT_DIR%\ext
 
-REM --- ACTUAL LIB PATHS ---
-set CURL_LIB_DIR=%PROJECT_DIR%\packages\curl-vc140-static-32_64.7.53.0\lib\native\libs\x64\static\release
-set OPENSSL_LIB_DIR=%SRC_DIR%\include\openssl-native.1.0.1\build\native\lib\x64
 
 REM --- Run dumper before build ---
 echo [0/5] Running offset dumper...
@@ -57,7 +54,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo [3/5] Linking with LTCG and ICF...
-link /OUT:ext-cs2-skin-changer.exe *.obj d3d11.lib d3dcompiler.lib dxgi.lib user32.lib dwmapi.lib gdi32.lib gdiplus.lib ole32.lib /LIBPATH:"%OPENSSL_LIB_DIR%" libssl.lib libcrypto.lib ws2_32.lib wldap32.lib crypt32.lib normaliz.lib /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG
+link /OUT:ext-cs2-skin-changer.exe *.obj d3d11.lib d3dcompiler.lib dxgi.lib user32.lib dwmapi.lib gdi32.lib gdiplus.lib ole32.lib  /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG
 
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Final linking failed!
