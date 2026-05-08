@@ -1,16 +1,21 @@
 # External Skinchanger for CS2
 This tool uses low level C++ Win32 API to interact with the game’s memory to make skins change.
-### Features:
+## Features:
   * dynamic weapon recognition
   * GDI+ skinchanger menu
   * Uses https://github.com/ByMykel/CSGO-API for weapon icons and item rarity
   * Supports old and new weapon models
   * Config manager which loads skins that were last used
   * Trusted Dumper: Uses the https://github.com/a2x/cs2-dumper.git  You can compile the dumper yourself if you prefer.
-### Requirements: 
+## Requirements: 
 * Visual Studio 2022 with "Desktop development with C++" workload installed.
 * Counter-Strike 2
-### How to build:
+## How to build:
+First clone my repo with this command: \
+`git clone https://github.com/Batman123n/cs2-skin-changer.git` 
+
+### Choose one of the following options to build the tool:
+
 Option 1 (Recommended):
   1. Open CS2
   2. Run build.bat
@@ -32,3 +37,6 @@ Option 2 (Manual):
   * ValorantTracker - Developed the GDI+ menu on top of the base.
   * a2x - Provided the offset dumper.
   * ByMykel - Provided CSGO-API: https://github.com/ByMykel/CSGO-API
+## In-game screenshot:
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/9b103b97-1d2d-4df1-a362-f9817acf32c2" />
+
