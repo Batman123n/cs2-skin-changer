@@ -8,7 +8,7 @@ This tool uses low level C++ Win32 API to interact with the game’s memory to m
   * Config manager which loads skins that were last used
   * Trusted Dumper: Uses the https://github.com/a2x/cs2-dumper.git  You can compile the dumper yourself if you prefer.
 ### Requirements: 
-* Visual Studio 2022 
+* Visual Studio 2022 with "Desktop development with C++" workload installed.
 * Counter-Strike 2
 ### How to build:
 Option 1 (Recommended):
