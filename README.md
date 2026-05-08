@@ -39,6 +39,7 @@ Option 2 (Manual):
   * ByMykel - Provided CSGO-API: https://github.com/ByMykel/CSGO-API
 ## In-game screenshots:
 First one is from deathmatch and other is skinchanger menu showcase.
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5a407dd4-7fae-4beb-bc4a-07f771c54387" /> \
-<img width="1487" height="984" alt="image" src="https://github.com/user-attachments/assets/8c0afd52-eb76-493f-8faa-343f4534da00" />
+| Deathmatch Showcase | Skinchanger Menu |
+| :---: | :---: |
+| <img width="550" alt="Deathmatch Showcase" src="https://github.com/user-attachments/assets/5a407dd4-7fae-4beb-bc4a-07f771c54387" /> | <img width="500" alt="Menu Showcase" src="https://github.com/user-attachments/assets/8c0afd52-eb76-493f-8faa-343f4534da00" /> |
 
