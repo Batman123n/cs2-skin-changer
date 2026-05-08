@@ -125,69 +125,55 @@ void RenderWeaponTab(float x, float y, float w, float h)
 
 void RenderKnifeTab(float x, float y, float w, float h)
 {
-     // Smart Auto-Detect Logic
-    bool isDefaultKnife = true;
-    int autoDetectedIndex = -1;
-    auto it = KnifeNames.find(static_cast<uint16_t>(CurrentWeaponDef));
-    if (it != KnifeNames.end()) {
-        std::string knifeName = it->second;
-        for (int i = 0; i < (int)Knifes.size(); i++) {
-            if (Knifes[i].name.find(knifeName) != std::string::npos) {
-                autoDetectedIndex = i; break;
-            }
-        }
-    }
-    if (autoDetectedIndex != -1) {
-        if (selectedKnifeIndex != autoDetectedIndex) {
-            selectedKnifeIndex = autoDetectedIndex;
-            selectedKnifeSkinIndex = 0;
-        }
-        isDefaultKnife = false;
-    }
+    // Removed Smart Auto-Detect Logic
 
     float curY = y + 20;
 
-    // Model Selector (Only if Default)
-    if (isDefaultKnife) {
-        SC_GUI::DrawStringA("Select Knife Type (Scroll to see more):", x + 20, curY, Color::White, SC_GUI::mainFont, false);
-        curY += 25;
+    // --- Model Selector (Always Visible) ---
+    SC_GUI::DrawStringA("Select Knife Type (Scroll to see more):", x + 20, curY, Color::White, SC_GUI::mainFont, false);
+    curY += 25;
 
-        // Horizontal Scroll for Knives
-        static float kScrollX = 0.0f;
-        SC_GUI::SetClip(x, curY, w, 35);
-        if (SC_GUI::Input.mousePos.y >= curY && SC_GUI::Input.mousePos.y <= curY + 35) {
-             kScrollX += SC_GUI::Input.scrollDelta * 0.5f;
-        }
-        float kContentW = Knifes.size() * 85.0f;
-        if (kScrollX > 0) kScrollX = 0;
-        if (kScrollX < -(kContentW - w)) kScrollX = -(kContentW - w);
-
-        for(int k=0; k<(int)Knifes.size(); k++) {
-             if (SC_GUI::Button("k_model_" + std::to_string(k), Knifes[k].name, x + 20 + kScrollX + (k*85), curY, 80, 25, selectedKnifeIndex == k)) {
-                 selectedKnifeIndex = k;
-                 selectedKnifeSkinIndex = 0;
-                 skinManager->SetKnife(Knifes[k]);
-             }
-        }
-        SC_GUI::ResetClip();
-        curY += 40;
-    } else {
-        SC_GUI::DrawStringA("Detected: " + Knifes[selectedKnifeIndex].name, x + 20, curY, Color(255, 100, 255, 100), SC_GUI::titleFont, false);
-        curY += 40;
+    // Horizontal Scroll for Knives
+    static float kScrollX = 0.0f;
+    SC_GUI::SetClip(x, curY, w, 35);
+    
+    if (SC_GUI::Input.mousePos.y >= curY && SC_GUI::Input.mousePos.y <= curY + 35) {
+         kScrollX += SC_GUI::Input.scrollDelta * 0.5f;
     }
+    
+    float kContentW = Knifes.size() * 85.0f;
+    if (kScrollX > 0) kScrollX = 0;
+    if (kScrollX < -(kContentW - w)) kScrollX = -(kContentW - w);
 
-    // Grid (Scrollable)
+    for(int k = 0; k < (int)Knifes.size(); k++) {
+         // Button returns true when clicked
+         if (SC_GUI::Button("k_model_" + std::to_string(k), Knifes[k].name, x + 20 + kScrollX + (k * 85), curY, 80, 25, selectedKnifeIndex == k)) {
+             selectedKnifeIndex = k;
+             selectedKnifeSkinIndex = 0; // Reset skin selection when changing model
+             skinManager->SetKnife(Knifes[k]);
+         }
+    }
+    SC_GUI::ResetClip();
+    curY += 40;
+
+    // --- Skin Grid ---
+    // Ensure selectedKnifeIndex is within bounds to avoid crashes
+    if (selectedKnifeIndex < 0 || selectedKnifeIndex >= (int)Knifes.size())
+        selectedKnifeIndex = 0;
+
     std::string FilterName = Knifes[selectedKnifeIndex].name;
     const std::vector<SkinInfo_t>& allKnifeSkins = skindb->GetKnifeSkins();
     std::vector<SkinInfo_t> filteredSkins;
-    filteredSkins.push_back(SkinInfo_t{ 0, false, "Vanilla", WeaponsEnum::none, 1 }); // Default rarity
+    
+    // Add Vanilla Option
+    filteredSkins.push_back(SkinInfo_t{ 0, false, "Vanilla", WeaponsEnum::none, 1 });
 
     for (const auto& skin : allKnifeSkins) {
         if (skin.name.find(FilterName) == std::string::npos) continue;
         filteredSkins.push_back(skin);
     }
 
-    // Sort Knife Skins
+    // Sort Knife Skins by rarity
     std::sort(filteredSkins.begin(), filteredSkins.end(), [](const SkinInfo_t& a, const SkinInfo_t& b) {
         return a.rarity > b.rarity;
     });
@@ -216,16 +202,21 @@ void RenderKnifeTab(float x, float y, float w, float h)
          float cX = x + 20 + (displayIdx % cols) * (itemW + pad);
          float cY = viewY + kSkinScrollY + (displayIdx / cols) * (itemH + pad);
 
-         // Cull
-         if (cY + itemH < viewY || cY > viewY + viewH) { displayIdx++; continue; }
+         // Culling
+         if (cY + itemH < viewY || cY > viewY + viewH) { 
+             displayIdx++; 
+             continue; 
+         }
 
-         bool selected = (selectedKnifeSkinIndex == i);
-         if (SC_GUI::SkinCard("kskin_" + filteredSkins[i].name, filteredSkins[i].name, filteredSkins[i].image_url, filteredSkins[i].rarity, cX, cY, itemW, itemH, selected, configManager->diskCacheEnabled)) {
+         bool isSelected = (selectedKnifeSkinIndex == i);
+         if (SC_GUI::SkinCard("kskin_" + filteredSkins[i].name, filteredSkins[i].name, filteredSkins[i].image_url, filteredSkins[i].rarity, cX, cY, itemW, itemH, isSelected, configManager->diskCacheEnabled)) {
              selectedKnifeSkinIndex = i;
-             if (i!=0) {
+             if (i != 0) {
                  SkinInfo_t s = filteredSkins[i];
-                 s.weaponType = WeaponsEnum::CtKnife; skinManager->AddSkin(s);
-                 s.weaponType = WeaponsEnum::Tknife; skinManager->AddSkin(s);
+                 s.weaponType = WeaponsEnum::CtKnife; 
+                 skinManager->AddSkin(s);
+                 s.weaponType = WeaponsEnum::Tknife; 
+                 skinManager->AddSkin(s);
              }
          }
          displayIdx++;
