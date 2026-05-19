@@ -2,6 +2,8 @@
 This tool uses low level C++ Win32 API to interact with the game’s memory to make skins change.
 ## Features:
   * dynamic weapon recognition
+  * color themes
+  * music kits (including new ones)
   * GDI+ skinchanger menu
   * Uses https://github.com/ByMykel/CSGO-API for weapon icons and item rarity
   * Supports old and new weapon models
@@ -12,7 +14,7 @@ This tool uses low level C++ Win32 API to interact with the game’s memory to m
 * Counter-Strike 2
 ## How to build:
 First clone my repo with this command: \
-`git clone https://github.com/Batman123n/cs2-skin-changer.git` 
+`git clone https://github.com/Batman123n/cs2-skin-changer.git`
 
 ### Choose one of the following options to build the tool:
 
