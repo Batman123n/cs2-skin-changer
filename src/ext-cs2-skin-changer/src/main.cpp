@@ -9,6 +9,8 @@ bool ForceUpdate = false;
 SkinManager* skinManager = new SkinManager();
 CSkinDB* skindb = new CSkinDB();
 
+void BhopThread(bool* enabled);
+
 void SkinChangerThread()
 {
     uintptr_t lastActiveWeapon = 0;
@@ -159,9 +161,11 @@ int main()
 
     configManager->Setup();
     configManager->AutoLoad();
+    SetTheme(skinManager->selectedThemeIndex);
 
     std::thread(SkinChangerThread).detach();
     std::thread(GloveChangerThread).detach();
+    std::thread(BhopThread, &skinManager->bBhopEnabled).detach();
 
     std::cout << "SkinChanger Started (Multi-threaded)\n";
 

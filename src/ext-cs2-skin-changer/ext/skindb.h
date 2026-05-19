@@ -181,6 +181,11 @@ public:
     Glove_t Gloves = Glove_t();
     Knife_t Knife = Knife_t();
     MusicKit_t MusicKit = MusicKit_t(static_cast<uint16_t>(MusicKit::CounterStrike2), "Counter-Strike 2");
+    int selectedKnifeIndex = 0;
+    int selectedKnifeSkinIndex = 0;
+    int selectedMusicKitIndex = 0;
+    int selectedThemeIndex = 0;
+    bool bBhopEnabled = false;
     mutable std::shared_mutex mtx;
 
     void AddSkin(SkinInfo_t AddedSkin)

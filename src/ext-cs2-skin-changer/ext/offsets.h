@@ -27,6 +27,7 @@ namespace Offsets
     inline std::ptrdiff_t m_hActiveWeapon = cs2_dumper::schemas::client_dll::CPlayer_WeaponServices::m_hActiveWeapon; // CHandle<C_BasePlayerWeapon>
 
     inline std::ptrdiff_t m_pGameSceneNode = cs2_dumper::schemas::client_dll::C_BaseEntity::m_pGameSceneNode; // CGameSceneNode*
+    inline std::ptrdiff_t m_fFlags = cs2_dumper::schemas::client_dll::C_BaseEntity::m_fFlags; // uint32
     inline std::ptrdiff_t m_pChild = cs2_dumper::schemas::client_dll::CGameSceneNode::m_pChild; // CGameSceneNode*
     inline std::ptrdiff_t m_pNextSibling = cs2_dumper::schemas::client_dll::CGameSceneNode::m_pNextSibling; // CGameSceneNode*
     inline std::ptrdiff_t m_pOwner = cs2_dumper::schemas::client_dll::CGameSceneNode::m_pOwner; // CEntityInstance*

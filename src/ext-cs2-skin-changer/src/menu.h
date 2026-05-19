@@ -8,12 +8,36 @@
 
 static WeaponsEnum CurrentWeaponDef;
 static int selectedSkinIndex = 0;
-static int selectedKnifeIndex = 0;
-static int selectedKnifeSkinIndex = 0;
-static int selectedMusicKitIndex = 0;
 static char searchBuffer[128] = "";
 
 void UpdateSearchInput() {
+}
+
+void SetTheme(int index) {
+    skinManager->selectedThemeIndex = index;
+    if (index == 0) {
+        SC_GUI::currentTheme = {
+            Color(255, 12, 12, 12),
+            Color(255, 20, 20, 20),
+            Color(255, 30, 30, 30),
+            Color(255, 45, 45, 45),
+            Color(255, 40, 40, 40),
+            Color(255, 100, 100, 255),
+            Color(255, 255, 255, 255),
+            Color(255, 150, 150, 150)
+        };
+    } else if (index == 1) {
+        SC_GUI::currentTheme = {
+            Color(255, 15, 20, 30),
+            Color(255, 20, 25, 40),
+            Color(255, 40, 50, 70),
+            Color(255, 30, 40, 60),
+            Color(255, 30, 45, 65), // Separator
+            Color(255, 0, 120, 215), // Blue Accent
+            Color(255, 255, 255),
+            Color(255, 170, 180, 200)
+        };
+    }
 }
 
 void RenderWeaponTab(float x, float y, float w, float h)
@@ -147,9 +171,9 @@ void RenderKnifeTab(float x, float y, float w, float h)
 
     for(int k = 0; k < (int)Knifes.size(); k++) {
          // Button returns true when clicked
-         if (SC_GUI::Button("k_model_" + std::to_string(k), Knifes[k].name, x + 20 + kScrollX + (k * 85), curY, 80, 25, selectedKnifeIndex == k)) {
-             selectedKnifeIndex = k;
-             selectedKnifeSkinIndex = 0; // Reset skin selection when changing model
+         if (SC_GUI::Button("k_model_" + std::to_string(k), Knifes[k].name, x + 20 + kScrollX + (k * 85), curY, 80, 25, skinManager->selectedKnifeIndex == k)) {
+             skinManager->selectedKnifeIndex = k;
+             skinManager->selectedKnifeSkinIndex = 0; // Reset skin selection when changing model
              skinManager->SetKnife(Knifes[k]);
          }
     }
@@ -158,10 +182,10 @@ void RenderKnifeTab(float x, float y, float w, float h)
 
     // --- Skin Grid ---
     // Ensure selectedKnifeIndex is within bounds to avoid crashes
-    if (selectedKnifeIndex < 0 || selectedKnifeIndex >= (int)Knifes.size())
-        selectedKnifeIndex = 0;
+    if (skinManager->selectedKnifeIndex < 0 || skinManager->selectedKnifeIndex >= (int)Knifes.size())
+        skinManager->selectedKnifeIndex = 0;
 
-    std::string FilterName = Knifes[selectedKnifeIndex].name;
+    std::string FilterName = Knifes[skinManager->selectedKnifeIndex].name;
     const std::vector<SkinInfo_t>& allKnifeSkins = skindb->GetKnifeSkins();
     std::vector<SkinInfo_t> filteredSkins;
     
@@ -208,9 +232,9 @@ void RenderKnifeTab(float x, float y, float w, float h)
              continue; 
          }
 
-         bool isSelected = (selectedKnifeSkinIndex == i);
+         bool isSelected = (skinManager->selectedKnifeSkinIndex == i);
          if (SC_GUI::SkinCard("kskin_" + filteredSkins[i].name, filteredSkins[i].name, filteredSkins[i].image_url, filteredSkins[i].rarity, cX, cY, itemW, itemH, isSelected, configManager->diskCacheEnabled)) {
-             selectedKnifeSkinIndex = i;
+             skinManager->selectedKnifeSkinIndex = i;
              if (i != 0) {
                  SkinInfo_t s = filteredSkins[i];
                  s.weaponType = WeaponsEnum::CtKnife; 
@@ -272,10 +296,10 @@ void RenderMusicTab(float x, float y, float w, float h)
 
         if (cY + itemH < viewY || cY > viewY + viewH) { displayIdx++; continue; }
 
-        bool selected = (selectedMusicKitIndex == idx);
+        bool selected = (skinManager->selectedMusicKitIndex == idx);
         // Use Rarity 3 (Rare/Blue) for Music Kits as default
         if (SC_GUI::SkinCard("music_" + std::to_string(idx), musicKits[idx].name, musicKits[idx].image_url, 3, cX, cY, itemW, itemH, selected, configManager->diskCacheEnabled)) {
-             selectedMusicKitIndex = idx;
+             skinManager->selectedMusicKitIndex = idx;
              skinManager->MusicKit = musicKits[idx];
              ForceUpdate = true;
         }
@@ -383,30 +407,12 @@ void RenderSettingsTab(float x, float y, float w, float h)
     curY += 25;
 
     if (SC_GUI::Button("theme_darkred", "Dark Red (Default)", x + 20, curY, 200, 30)) {
-        SC_GUI::currentTheme = {
-            Color(255, 12, 12, 12),
-            Color(255, 20, 20, 20),
-            Color(255, 30, 30, 30),
-            Color(255, 45, 45, 45),
-            Color(255, 40, 40, 40),
-            Color(255, 100, 100, 255),
-            Color(255, 255, 255, 255),
-            Color(255, 150, 150, 150)
-        };
+        SetTheme(0);
     }
     curY += 35;
 
     if (SC_GUI::Button("theme_midblue", "Midnight Blue", x + 20, curY, 200, 30)) {
-        SC_GUI::currentTheme = {
-            Color(255, 15, 20, 30),
-            Color(255, 20, 25, 40),
-            Color(255, 40, 50, 70),
-            Color(255, 30, 40, 60),
-            Color(255, 30, 45, 65), // Separator
-            Color(255, 0, 120, 215), // Blue Accent
-            Color(255, 255, 255),
-            Color(255, 170, 180, 200)
-        };
+        SetTheme(1);
     }
     curY += 45;
 
@@ -561,8 +567,9 @@ void RenderMenu()
     if (SC_GUI::TabButton("tab_wep", "Weapons", tabX, tabY, tabW, tabH, active_tab == 0)) active_tab = 0;
     if (SC_GUI::TabButton("tab_knife", "Knives", tabX, tabY + 50, tabW, tabH, active_tab == 2)) active_tab = 2;
     if (SC_GUI::TabButton("tab_gloves", "Gloves", tabX, tabY + 100, tabW, tabH, active_tab == 4)) active_tab = 4;
-    if (SC_GUI::TabButton("tab_music", "Music Kits", tabX, tabY + 150, tabW, tabH, active_tab == 1)) active_tab = 1;
-    if (SC_GUI::TabButton("tab_settings", "Settings", tabX, tabY + 200, tabW, tabH, active_tab == 3)) active_tab = 3;
+    if (SC_GUI::TabButton("tab_bhop", "BHOP", tabX, tabY + 150, tabW, tabH, active_tab == 5)) active_tab = 5;
+    if (SC_GUI::TabButton("tab_music", "Music Kits", tabX, tabY + 200, tabW, tabH, active_tab == 1)) active_tab = 1;
+    if (SC_GUI::TabButton("tab_settings", "Settings", tabX, tabY + 250, tabW, tabH, active_tab == 3)) active_tab = 3;
 
     // --- Content Area ---
     float cX = x + sidebarW;
@@ -578,6 +585,10 @@ void RenderMenu()
         case 2: RenderKnifeTab(cX, cY, cW, cH); break;
         case 3: RenderSettingsTab(cX, cY, cW, cH); break;
         case 4: RenderGloveTab(cX, cY, cW, cH); break;
+        case 5: {
+            SC_GUI::Checkbox("bhop_enable", "Enable Bunny Hop", &skinManager->bBhopEnabled, cX + 20, cY + 20);
+            break;
+        }
     }
     SC_GUI::ResetClip();
 }

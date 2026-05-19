@@ -72,6 +72,11 @@ public:
 
         // Settings
         j["disk_cache_enabled"] = diskCacheEnabled;
+        j["selected_knife_index"] = skinManager->selectedKnifeIndex;
+        j["selected_knife_skin_index"] = skinManager->selectedKnifeSkinIndex;
+        j["selected_musickit_index"] = skinManager->selectedMusicKitIndex;
+        j["selected_theme_index"] = skinManager->selectedThemeIndex;
+        j["bhop_enabled"] = skinManager->bBhopEnabled;
 
         // Write
         std::string path = std::string(configDir.begin(), configDir.end()) + name + ".json";
@@ -123,6 +128,28 @@ public:
 
             if (j.find("disk_cache_enabled") != j.end()) {
                 diskCacheEnabled = j["disk_cache_enabled"].get<bool>();
+            }
+
+            if (j.find("selected_knife_index") != j.end()) {
+                skinManager->selectedKnifeIndex = j["selected_knife_index"].get<int>();
+                if (skinManager->selectedKnifeIndex >= 0 && skinManager->selectedKnifeIndex < (int)Knifes.size())
+                    skinManager->SetKnife(Knifes[skinManager->selectedKnifeIndex]);
+            }
+
+            if (j.find("selected_knife_skin_index") != j.end()) {
+                skinManager->selectedKnifeSkinIndex = j["selected_knife_skin_index"].get<int>();
+            }
+
+            if (j.find("selected_musickit_index") != j.end()) {
+                skinManager->selectedMusicKitIndex = j["selected_musickit_index"].get<int>();
+            }
+
+            if (j.find("selected_theme_index") != j.end()) {
+                skinManager->selectedThemeIndex = j["selected_theme_index"].get<int>();
+            }
+
+            if (j.find("bhop_enabled") != j.end()) {
+                skinManager->bBhopEnabled = j["bhop_enabled"].get<bool>();
             }
 
             ForceUpdate = true;

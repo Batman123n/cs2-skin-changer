@@ -45,7 +45,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo [2/5] Compiling with Whole Program Optimization (/GL)...
-cl /std:c++20 /EHsc /O2 /MT /GL /Gw /DNDEBUG /wd4244 /I"%SRC_DIR%" /I"%SRC_DIR%\include" /I"%SRC_DIR%\SDK" /I"%EXT_DIR%" /c "%SRC_DIR%\main.cpp"
+cl /std:c++20 /EHsc /O2 /MT /GL /Gw /DNDEBUG /wd4244 /I"%SRC_DIR%" /I"%SRC_DIR%\include" /I"%SRC_DIR%\SDK" /I"%EXT_DIR%" /c "%SRC_DIR%\*.cpp"
 
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Compilation failed!
